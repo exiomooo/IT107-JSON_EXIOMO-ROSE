@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title>JSON Database</title>
+    </head>
+    <body>
+        <h1>Student Database</h1>
+        <p>
+            Student ID<br>
+            <input type="text" id="id" placeholder="Student ID"><br><br>
+            Student Name<br>
+            <input type="text" id="name" placeholder="Student Name"><br><br>
+            Age<br>
+            <input type="number" id="age" placeholder="Age"><br><br>
+            Course<br>
+            <input type="text" id="course" placeholder="Course"><br><br>
+            <input type="button" value="Add Student" onclick="addStudent()">
+        </p>
+        <h1>Student Record</h1>
+        <table border="1" cellpadding="5">
+            <thead>
+                <tr> <th>ID</th> <th>Name</th> <th>Age</th> <th>Course</th> </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+        <p id="output"></p>
+
+    <script>
+        var savedData = localStorage.getItem("stud_db_sample");
+
+        
+        if (savedData == null) {
+
+            students = [
+                {id: "s1", name: "Alice Johnson", age: 22, course: "Computer Science"},
+                {id: "s2", name: "Almeda Asuncion", age: 21, course: "BSIT"},
+                {id: "s3", name: "Pedro Penduko", age: 23, course: "BSBA"}
+            ];
+            localStorage.setItem("stud_db_sample", JSON.stringify(students));
+            document.getElementById("output").innerHTML = "Student database loaded to Local Storage.";
+        } else {
+            students = JSON.parse(savedData);
+            document.getElementById("output").innerHTML = "Data loaded from storage.";
+        }
+
+        displayStudents();
+
+        function addStudent() {
+            var id = document.getElementById("id").value;
+            var name = document.getElementById("name").value;
+            var age = document.getElementById("age").value;
+            var course = document.getElementById("course").value;
+
+            // ADD NEW STUDENT - use .push
+            students.push({
+                id: id,
+                name: name,
+                age: age,
+                course: course
+            });
+            localStorage.setItem("stud_db_sample", JSON.stringify(students));
+            document.getElementById("output").innerHTML = "Student added successfully.";
+        }
+
+        // DISPLAY STUDENTS
+        function displayStudents() {
+            var table = "";
+            for (var i = 0; i < students.length; i++) {
+                table += "<tr>";
+                table += "<td>" + students[i].id + "</td>";
+                table += "<td>" + students[i].name + "</td>";
+                table += "<td>" + students[i].age + "</td>";
+                table += "<td>" + students[i].course + "</td>";
+                table += "</tr>";
+            }
+            document.getElementById("studentTable").innerHTML = table;
+        }
+    </script>
+    </body>
+</html>
